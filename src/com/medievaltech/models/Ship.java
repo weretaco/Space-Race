@@ -43,6 +43,7 @@ public class Ship {
 	}
 	
 	public void draw(Canvas c) {
+		c.drawRect((float)(this.coordinates.x() - 1), (float)(this.coordinates.y() + 1), (float)(this.coordinates.x() + 1), (float)(this.coordinates.y() - 1), this.paint);
 		c.drawPoint((float)this.coordinates.x(), (float)this.coordinates.y(), this.paint);
 	}
 }
