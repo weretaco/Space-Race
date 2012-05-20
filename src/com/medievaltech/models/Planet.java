@@ -5,18 +5,23 @@ import com.medievaltech.utils.*;
 
 import android.graphics.*;
 
-public class Planet implements Drawable {
-	public DoublePoint location;
+public class Planet extends Location implements Drawable {
 	public int radius;
 	public Paint p;
 	
 	public Planet(int x, int y, int radius, Paint p) {
-		location = new DoublePoint(x, y);
+		super(new DoublePoint(x, y));
 		this.radius = radius;
 		this.p = p;
 	}
 	
 	public void draw(Canvas c) {
-		c.drawCircle((float)location.x(), (float)location.y(), radius, p);
+		c.drawCircle((float)x(), (float)y(), radius, p);
+	}
+
+	@Override
+	void destroy() {
+		// TODO Auto-generated method stub
+		
 	}
 }
