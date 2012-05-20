@@ -4,7 +4,7 @@ import com.medievaltech.*;
 import com.medievaltech.utils.DoublePoint;
 import android.graphics.*;
 
-public class Ship implements Drawable {
+public class Ship implements Entity {
 	//instance variables
 	private DoublePoint coordinates;
 	private DoublePoint destination;

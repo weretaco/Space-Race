@@ -29,7 +29,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
         private int fps = 0;
         
         /** Game Objects */
-        LinkedList<Drawable> entities = new LinkedList<Drawable>();
+        LinkedList<Entity> entities = new LinkedList<Entity>();
         
         /** Handle to the surface manager object we interact with */
         private SurfaceHolder mSurfaceHolder;
@@ -87,8 +87,12 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
          */
         private void updatePhysics() {
             long now = System.currentTimeMillis();
- 
+            
             if (mLastTime != 0) {
+            	
+            	for(Entity e : entities) {
+                	e.update(mLastTime);
+                }
  
                 //Time difference between now and last time we were here
                 int time = (int) (now - mLastTime);
@@ -120,7 +124,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
             // put in a background image of course
             canvas.drawColor(Color.BLACK);
  
-            for(Drawable e : entities) {
+            for(Entity e : entities) {
             	e.draw(canvas);
             }
             
