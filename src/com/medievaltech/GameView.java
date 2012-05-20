@@ -1,5 +1,7 @@
 package com.medievaltech;
 
+import com.medievaltech.models.Planet;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -21,6 +23,9 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
         private int frameSamplesCollected = 0;
         private int frameSampleTime = 0;
         private int fps = 0;
+        
+        /** Game Objects */
+        Planet p;
  
         /** Handle to the surface manager object we interact with */
         private SurfaceHolder mSurfaceHolder;
@@ -42,6 +47,12 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
          */
         @Override
         public void run() {
+        	Paint planetPaint = new Paint();
+            planetPaint.setAntiAlias(true);
+            planetPaint.setARGB(255, 20, 200, 20);
+        	
+        	p = new Planet(100, 100, 50, planetPaint);
+        	
             while (mRun) {
                 Canvas c = null;
                 try {
@@ -98,6 +109,8 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
             // put in a background image of course
             canvas.drawColor(Color.BLACK);
  
+            p.draw(canvas);
+            
             //Draw fps center screen
             canvas.drawText(fps + " fps", getWidth() / 2, getHeight() / 2, textPaint);
  
