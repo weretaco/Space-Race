@@ -26,6 +26,14 @@ public abstract class Location {
 		return coordinates.y();
 	}
 	
+	public DoublePoint getCoordinates() {
+		return this.coordinates;
+	}
+	
+	public boolean hasShip(Ship ship) {
+		return ships.contains(ship);
+	}
+	
 	public void setCoordinates(DoublePoint coordinates) {
 		this.coordinates = coordinates;
 	}
@@ -38,5 +46,6 @@ public abstract class Location {
 		ships.remove(ship);
 	}
 	
-	abstract void destroy();
+	abstract public void destroy();
+	abstract public boolean canDock(Ship ship);	
 }

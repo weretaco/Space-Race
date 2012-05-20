@@ -23,8 +23,13 @@ public class Planet extends Location implements Entity {
 	}
 
 	@Override
-	void destroy() {
+	public void destroy() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean canDock(Ship ship) {
+		return this.getCoordinates().distanceTo(ship.getCoordinates()) <= (double)radius;
 	}
 }
