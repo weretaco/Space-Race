@@ -1,6 +1,8 @@
 package com.medievaltech;
 
 import com.medievaltech.models.Planet;
+import com.medievaltech.models.Ship;
+import com.medievaltech.utils.DoublePoint;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -26,6 +28,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
         
         /** Game Objects */
         Planet p;
+        Ship s;
  
         /** Handle to the surface manager object we interact with */
         private SurfaceHolder mSurfaceHolder;
@@ -53,6 +56,12 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
         	
         	p = new Planet(100, 100, 50, planetPaint);
         	
+        	Paint shipPaint = new Paint();
+        	shipPaint.setAntiAlias(true);
+            shipPaint.setARGB(255, 200, 20, 20);
+        	
+            s = new Ship(new DoublePoint(1.0,1.0), new DoublePoint(400.0, 723.0), 2, shipPaint);
+            
             while (mRun) {
                 Canvas c = null;
                 try {
