@@ -1,5 +1,7 @@
 package com.medievaltech;
 
+import java.util.LinkedList;
+
 import com.medievaltech.models.Planet;
 import com.medievaltech.models.Ship;
 import com.medievaltech.utils.DoublePoint;
@@ -27,9 +29,8 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
         private int fps = 0;
         
         /** Game Objects */
-        Planet p;
-        Ship s;
- 
+        LinkedList<Drawable> entities = new LinkedList<Drawable>();
+        
         /** Handle to the surface manager object we interact with */
         private SurfaceHolder mSurfaceHolder;
  
@@ -54,14 +55,15 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
             planetPaint.setAntiAlias(true);
             planetPaint.setARGB(255, 20, 200, 20);
         	
-        	p = new Planet(100, 100, 50, planetPaint);
-        	
-        	Paint shipPaint = new Paint();
+            Paint shipPaint = new Paint();
         	shipPaint.setAntiAlias(true);
-            shipPaint.setARGB(255, 200, 20, 20);
-        	
-            s = new Ship(new DoublePoint(1.0,1.0), new DoublePoint(400.0, 723.0), 2, shipPaint);
+            //shipPaint.setARGB(255, 200, 20, 20);
+        	shipPaint.setARGB(255, 255, 255, 255);
             
+        	entities.add(new Planet(100, 100, 50, planetPaint));
+        	
+        	entities.add(new Ship(new DoublePoint(200.0,200.0), new DoublePoint(400.0, 723.0), 2, shipPaint));
+        	
             while (mRun) {
                 Canvas c = null;
                 try {
@@ -118,7 +120,9 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
             // put in a background image of course
             canvas.drawColor(Color.BLACK);
  
-            p.draw(canvas);
+            for(Drawable e : entities) {
+            	e.draw(canvas);
+            }
             
             //Draw fps center screen
             canvas.drawText(fps + " fps", getWidth() / 2, getHeight() / 2, textPaint);

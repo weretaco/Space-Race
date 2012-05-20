@@ -1,10 +1,11 @@
 package com.medievaltech.models;
 
-import com.medievaltech.utils.DoublePoint;
+import com.medievaltech.*;
+import com.medievaltech.utils.*;
 
 import android.graphics.*;
 
-public class Planet {
+public class Planet implements Drawable {
 	public DoublePoint location;
 	public int radius;
 	public Paint p;

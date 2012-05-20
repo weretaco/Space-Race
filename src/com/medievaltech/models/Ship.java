@@ -1,10 +1,10 @@
 package com.medievaltech.models;
+
+import com.medievaltech.*;
 import com.medievaltech.utils.DoublePoint;
+import android.graphics.*;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
-
-public class Ship {
+public class Ship implements Drawable {
 	//instance variables
 	private DoublePoint coordinates;
 	private DoublePoint destination;
@@ -43,7 +43,7 @@ public class Ship {
 	}
 	
 	public void draw(Canvas c) {
-		c.drawRect((float)(this.coordinates.x() - 1), (float)(this.coordinates.y() + 1), (float)(this.coordinates.x() + 1), (float)(this.coordinates.y() - 1), this.paint);
+		c.drawRect((float)(this.coordinates.x() - 1), (float)(this.coordinates.y() - 1), (float)(this.coordinates.x() + 1), (float)(this.coordinates.y() + 1), this.paint);
 		c.drawPoint((float)this.coordinates.x(), (float)this.coordinates.y(), this.paint);
 	}
 }
