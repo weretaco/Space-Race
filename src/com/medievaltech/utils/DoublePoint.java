@@ -20,4 +20,8 @@ public class DoublePoint {
 		this.x = x;
 		this.y = y;
 	}
+	
+	public double distanceTo(DoublePoint point) {
+		return Math.sqrt(Math.pow((point.x() - x), 2.0) + Math.pow((point.y() - y), 2.0));
+	}
 }

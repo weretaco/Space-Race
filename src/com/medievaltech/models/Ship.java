@@ -28,7 +28,13 @@ public class Ship implements Drawable {
 	
 	//Sets the destination coordinates of the ship
 	public void flyTo(Location destination) {
+		if(this.isDocked())
+			this.undock();
 		this.destination = destination;
+	}
+	
+	public DoublePoint getCoordinates() {
+		return this.coordinates;
 	}
 	
 	public void update(long lastUpdatedAt) {
@@ -40,18 +46,34 @@ public class Ship implements Drawable {
 		double newY = this.coordinates.y() + ( Math.cos(movementAngle) * this.speed * secondSinceLastUpdate );
 		
 		this.coordinates.set(newX, newY);
+		
+		if(hasReachedDestination())
+		{
+			dock(this.destination);
+		}
 	}
 	
 	public void dock(Location location) {
-		
+		location.dockShip(this);
 	}
 	
 	public void undock() {
-		
+		this.destination.undockShip(this);
+	}
+	
+	public boolean isDocked() {
+		return destination.hasShip(this);
+	}
+	
+	public boolean hasReachedDestination() {
+		return this.destination.canDock(this);
 	}
 	
 	public void draw(Canvas c) {
-		c.drawRect((float)(this.coordinates.x() - 1), (float)(this.coordinates.y() - 1), (float)(this.coordinates.x() + 1), (float)(this.coordinates.y() + 1), this.paint);
-		c.drawPoint((float)this.coordinates.x(), (float)this.coordinates.y(), this.paint);
+		if(!isDocked()) 
+		{
+			c.drawRect((float)(this.coordinates.x() - 1), (float)(this.coordinates.y() - 1), (float)(this.coordinates.x() + 1), (float)(this.coordinates.y() + 1), this.paint);
+			c.drawPoint((float)this.coordinates.x(), (float)this.coordinates.y(), this.paint);
+		}
 	}
 }
