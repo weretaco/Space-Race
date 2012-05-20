@@ -7,7 +7,7 @@ import android.graphics.*;
 public class Ship implements Entity {
 	//instance variables
 	private DoublePoint coordinates;
-	private DoublePoint destination;
+	private Location destination;
 	private Paint paint;
 	private int speed; //pixels per second
 	 
@@ -19,7 +19,7 @@ public class Ship implements Entity {
 	}
 	
 	//Create an instance of a moving ship
-	public Ship(DoublePoint coordinates, DoublePoint destination, int speed, Paint paint) {
+	public Ship(DoublePoint coordinates, Location destination, int speed, Paint paint) {
 		this.coordinates = coordinates;
 		this.destination = destination;
 		this.speed = speed;
@@ -27,12 +27,12 @@ public class Ship implements Entity {
 	}
 	
 	//Sets the destination coordinates of the ship
-	public void flyTo(DoublePoint destination) {
+	public void flyTo(Location destination) {
 		this.destination = destination;
 	}
 	
 	public void update(long lastUpdatedAt) {
-		long secondSinceLastUpdate =  (System.currentTimeMillis() - lastUpdatedAt)/1000;
+		double secondSinceLastUpdate =  (System.currentTimeMillis() - lastUpdatedAt)/1000.00;
 		double movementAngle = Math.toDegrees((this.destination.y() - this.coordinates.y())/(this.destination.x() - this.coordinates.x()));
 		
 		
@@ -40,6 +40,14 @@ public class Ship implements Entity {
 		double newY = this.coordinates.y() + ( Math.cos(movementAngle) * this.speed * secondSinceLastUpdate );
 		
 		this.coordinates.set(newX, newY);
+	}
+	
+	public void dock(Location location) {
+		
+	}
+	
+	public void undock() {
+		
 	}
 	
 	public void draw(Canvas c) {

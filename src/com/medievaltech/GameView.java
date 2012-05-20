@@ -59,10 +59,11 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
         	shipPaint.setAntiAlias(true);
             //shipPaint.setARGB(255, 200, 20, 20);
         	shipPaint.setARGB(255, 255, 255, 255);
-            
-        	entities.add(new Planet(100, 100, 50, planetPaint));
         	
-        	entities.add(new Ship(new DoublePoint(200.0,200.0), new DoublePoint(400.0, 723.0), 2, shipPaint));
+        	Planet planet = new Planet(100, 100, 50, planetPaint);
+        	entities.add(planet);
+        	
+        	entities.add(new Ship(new DoublePoint(400.0, 723.0), planet, 2, shipPaint));
         	
             while (mRun) {
                 Canvas c = null;
