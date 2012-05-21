@@ -39,11 +39,10 @@ public class Ship implements Entity {
 	
 	public void update(long lastUpdatedAt) {
 		double secondSinceLastUpdate =  (System.currentTimeMillis() - lastUpdatedAt)/1000.00;
-		double movementAngle = Math.toDegrees((this.destination.y() - this.coordinates.y())/(this.destination.x() - this.coordinates.x()));
+		double movementAngle = Math.atan2(this.destination.y() - this.coordinates.y(), this.destination.x() - this.coordinates.x());
 		
-		
-		double newX = this.coordinates.x() + ( Math.sin(movementAngle) * this.speed * secondSinceLastUpdate );
-		double newY = this.coordinates.y() + ( Math.cos(movementAngle) * this.speed * secondSinceLastUpdate );
+		double newX = this.coordinates.x() + ( Math.cos(movementAngle) * this.speed * secondSinceLastUpdate);
+		double newY = this.coordinates.y() + ( Math.sin(movementAngle) * this.speed * secondSinceLastUpdate);
 		
 		this.coordinates.set(newX, newY);
 		
@@ -70,10 +69,8 @@ public class Ship implements Entity {
 	}
 	
 	public void draw(Canvas c) {
-		if(!isDocked()) 
-		{
-			c.drawRect((float)(this.coordinates.x() - 1), (float)(this.coordinates.y() - 1), (float)(this.coordinates.x() + 1), (float)(this.coordinates.y() + 1), this.paint);
-			c.drawPoint((float)this.coordinates.x(), (float)this.coordinates.y(), this.paint);
+		if(!isDocked()) {
+			c.drawRect((float)coordinates.x()-2, (float)coordinates.y()-2, (float)coordinates.x()+2, (float)coordinates.y()+2, paint);
 		}
 	}
 }
