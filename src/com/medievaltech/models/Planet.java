@@ -1,10 +1,9 @@
 package com.medievaltech.models;
 
-import com.medievaltech.*;
 import com.medievaltech.utils.*;
 import android.graphics.*;
 
-public class Planet extends Location implements Entity {
+public class Planet extends Location {
 	public int radius;
 	public Paint p;
 	
@@ -13,10 +12,6 @@ public class Planet extends Location implements Entity {
 		this.radius = radius;
 		this.p = p;
 	}
-	
-	public void update(long lastUpdatedAt) {
-
-	}	
 	
 	public void draw(Canvas c) {
 		c.drawCircle((float)x(), (float)y(), radius, p);

@@ -1,10 +1,9 @@
 package com.medievaltech.models;
 
-import com.medievaltech.*;
 import com.medievaltech.utils.DoublePoint;
 import android.graphics.*;
 
-public class Ship implements Entity {
+public class Ship {
 	//instance variables
 	private DoublePoint coordinates;
 	private Location destination;

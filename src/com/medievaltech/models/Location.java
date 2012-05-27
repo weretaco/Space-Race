@@ -2,6 +2,8 @@ package com.medievaltech.models;
 
 import java.util.ArrayList;
 
+import android.graphics.Canvas;
+
 import com.medievaltech.utils.DoublePoint;
 
 public abstract class Location {
@@ -16,6 +18,9 @@ public abstract class Location {
 	public Location(DoublePoint coordinates, ArrayList<Ship> ships) {
 		this.coordinates = coordinates;
 		this.ships = ships;
+	}
+	
+	public void draw(Canvas c) {
 	}
 	
 	public double x() {

@@ -1,7 +1,6 @@
 package com.medievaltech;
 
-import java.util.LinkedList;
-
+import com.medievaltech.models.Map;
 import com.medievaltech.models.Planet;
 import com.medievaltech.models.Ship;
 import com.medievaltech.utils.DoublePoint;
@@ -28,8 +27,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
         private int frameSampleTime = 0;
         private int fps = 0;
         
-        /** Game Objects */
-        LinkedList<Entity> entities = new LinkedList<Entity>();
+        private Map map;
         
         /** Handle to the surface manager object we interact with */
         private SurfaceHolder mSurfaceHolder;
@@ -44,6 +42,8 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
             textPaint = new Paint();
             textPaint.setARGB(255,255,255,255);
             textPaint.setTextSize(32);
+            
+            map = new Map(400, 600);
         }
  
         /**
@@ -60,9 +60,9 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
             shipPaint.setColor(Color.rgb(200, 20, 20));
         	
         	Planet planet = new Planet(100, 100, 50, planetPaint);
-        	entities.add(planet);
+        	map.addLocation(planet);
         	
-        	entities.add(new Ship(new DoublePoint(300.0, 323.0), planet, 20, shipPaint));
+        	map.addShip(new Ship(new DoublePoint(300.0, 323.0), planet, 20, shipPaint));
         	
             while (mRun) {
                 Canvas c = null;
@@ -90,9 +90,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
             
             if (mLastTime != 0) {
             	
-            	for(Entity e : entities) {
-                	e.update(mLastTime);
-                }
+            	map.update(now);
  
                 //Time difference between now and last time we were here
                 int time = (int) (now - mLastTime);
@@ -124,9 +122,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
             // put in a background image of course
             canvas.drawColor(Color.BLACK);
  
-            for(Entity e : entities) {
-            	e.draw(canvas);
-            }
+            map.draw(canvas);
             
             //Draw fps center screen
             canvas.drawText(fps + " fps", getWidth() / 2, getHeight() / 2, textPaint);
