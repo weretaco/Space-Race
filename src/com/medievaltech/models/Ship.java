@@ -2,6 +2,7 @@ package com.medievaltech.models;
 
 import com.medievaltech.utils.DoublePoint;
 import android.graphics.*;
+import android.util.Log;
 
 public class Ship {
 	//instance variables
@@ -37,6 +38,8 @@ public class Ship {
 	}
 	
 	public void update(long lastUpdatedAt) {
+		Log.i("SpaceRace", "Inside ship.update");
+		
 		double secondSinceLastUpdate =  (System.currentTimeMillis() - lastUpdatedAt)/1000.00;
 		double movementAngle = Math.atan2(this.destination.y() - this.coordinates.y(), this.destination.x() - this.coordinates.x());
 		

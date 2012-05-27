@@ -8,11 +8,11 @@ public class DoublePoint {
 		this.y = y;
 	}
 	
-	public double x () {
+	public double x() {
 		return x;
 	}
 	
-	public double y () {
+	public double y() {
 		return y;
 	}
 	

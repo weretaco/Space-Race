@@ -6,22 +6,20 @@ import com.medievaltech.models.Ship;
 import com.medievaltech.utils.DoublePoint;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
+import android.graphics.*;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 class GameView extends SurfaceView implements SurfaceHolder.Callback {
     class GameThread extends Thread {
- 
+    	
         /** Are we running ? */
         private boolean mRun;
- 
+        
         /** Used to figure out elapsed time between frames */
-        private long mLastTime;     
- 
+        private long mLastTime;
+        
         /** Variables for the counter */
         private int frameSamplesCollected = 0;
         private int frameSampleTime = 0;
@@ -42,8 +40,6 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
             textPaint = new Paint();
             textPaint.setARGB(255,255,255,255);
             textPaint.setTextSize(32);
-            
-            map = new Map(400, 600);
         }
  
         /**
@@ -51,6 +47,8 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
          */
         @Override
         public void run() {
+        	map = new Map(getWidth(), getHeight());
+        	
         	Paint planetPaint = new Paint();
             planetPaint.setAntiAlias(true);
             planetPaint.setColor(Color.rgb(20, 200, 20));
@@ -61,6 +59,16 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
         	
         	Planet planet = new Planet(100, 100, 50, planetPaint);
         	map.addLocation(planet);
+        	
+        	map.generateRandomPlanet();
+        	map.generateRandomPlanet();
+        	map.generateRandomPlanet();
+        	map.generateRandomPlanet();
+        	map.generateRandomPlanet();
+        	map.generateRandomPlanet();
+        	map.generateRandomPlanet();
+        	map.generateRandomPlanet();
+        	map.generateRandomPlanet();
         	
         	map.addShip(new Ship(new DoublePoint(300.0, 323.0), planet, 20, shipPaint));
         	
@@ -124,9 +132,12 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
  
             map.draw(canvas);
             
-            //Draw fps center screen
+            // Draw fps
             canvas.drawText(fps + " fps", getWidth() / 2, getHeight() / 2, textPaint);
- 
+            
+            //Draw screen dimensions
+            canvas.drawText(getWidth()+"x"+getHeight(), getWidth() / 2, getHeight() / 2 + 50, textPaint);
+            
             canvas.restore();
         }
  

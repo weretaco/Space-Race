@@ -20,6 +20,10 @@ public abstract class Location {
 		this.ships = ships;
 	}
 	
+	public int getCollisionRadius() {
+		return 0;
+	}
+	
 	public void draw(Canvas c) {
 	}
 	

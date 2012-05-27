@@ -13,6 +13,10 @@ public class Planet extends Location {
 		this.p = p;
 	}
 	
+	public int getCollisionRadius() {
+		return radius+5;
+	}
+	
 	public void draw(Canvas c) {
 		c.drawCircle((float)x(), (float)y(), radius, p);
 	}
