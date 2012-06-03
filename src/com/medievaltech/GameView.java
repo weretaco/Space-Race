@@ -8,6 +8,8 @@ import com.medievaltech.utils.DoublePoint;
 import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -47,7 +49,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
          */
         @Override
         public void run() {
-        	map = new Map(getWidth(), getHeight());
+        	map = new Map(getWidth(), getHeight(), 9);
         	
         	Paint planetPaint = new Paint();
             planetPaint.setAntiAlias(true);
@@ -59,16 +61,6 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
         	
         	Planet planet = new Planet(100, 100, 50, planetPaint);
         	map.addLocation(planet);
-        	
-        	map.generateRandomPlanet();
-        	map.generateRandomPlanet();
-        	map.generateRandomPlanet();
-        	map.generateRandomPlanet();
-        	map.generateRandomPlanet();
-        	map.generateRandomPlanet();
-        	map.generateRandomPlanet();
-        	map.generateRandomPlanet();
-        	map.generateRandomPlanet();
         	
         	map.addShip(new Ship(new DoublePoint(300.0, 323.0), planet, 20, shipPaint));
         	

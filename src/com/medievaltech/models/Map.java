@@ -19,6 +19,14 @@ public class Map {
 		this.dimY = dimY;
 	}
 	
+	public Map(int dimX, int dimY, int numPlanets) {
+		this.dimX = dimX;
+		this.dimY = dimY;
+		
+		for(int x=0; x<numPlanets; x++)
+			generateRandomPlanet();
+	}
+	
 	public void addLocation(Location l) {
 		locations.add(l);
 	}
