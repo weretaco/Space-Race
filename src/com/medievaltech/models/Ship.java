@@ -2,7 +2,6 @@ package com.medievaltech.models;
 
 import com.medievaltech.utils.DoublePoint;
 import android.graphics.*;
-import android.util.Log;
 
 public class Ship {
 	//instance variables
@@ -10,12 +9,16 @@ public class Ship {
 	private Location destination;
 	private Paint paint;
 	private int speed; //pixels per second
-	 
+	private State currentState;
+	private enum State {
+		DOCKED, FLYING
+	}
 	//Create an instance of a stationary ship
 	public Ship(DoublePoint coordinates, int speed, Paint paint) {
 		this.coordinates = coordinates;
 		this.speed = speed;
 		this.paint = paint;
+		this.currentState = State.DOCKED;
 	}
 	
 	//Create an instance of a moving ship
@@ -24,6 +27,7 @@ public class Ship {
 		this.destination = destination;
 		this.speed = speed;
 		this.paint = paint;
+		this.currentState = State.FLYING;
 	}
 	
 	//Sets the destination coordinates of the ship
@@ -31,6 +35,7 @@ public class Ship {
 		if(this.isDocked())
 			this.undock();
 		this.destination = destination;
+		this.currentState = State.FLYING;
 	}
 	
 	public DoublePoint getCoordinates() {
@@ -54,6 +59,7 @@ public class Ship {
 	
 	public void dock(Location location) {
 		location.dockShip(this);
+		this.currentState = State.DOCKED;
 	}
 	
 	public void undock() {
@@ -61,7 +67,11 @@ public class Ship {
 	}
 	
 	public boolean isDocked() {
-		return destination.hasShip(this);
+		return currentState == State.DOCKED;
+	}
+	
+	public boolean isFlying() {
+		return currentState == State.FLYING;
 	}
 	
 	public boolean hasReachedDestination() {

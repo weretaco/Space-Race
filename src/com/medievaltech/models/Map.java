@@ -27,6 +27,26 @@ public class Map {
 			generateRandomPlanet();
 	}
 	
+	public Ship getRandomShip() {
+		return ships.get(Utils.randomInt(ships.size()));
+	}
+	
+	public Ship getRandomDockedShip() {
+		LinkedList<Ship> dockedShips = new LinkedList<Ship> ();
+		for(Ship s: this.ships)
+			if(s.isDocked())
+				dockedShips.add(s);
+		return dockedShips.get(Utils.randomInt(dockedShips.size()));
+	}
+	
+	public Planet getRandomPlanet() {
+		Location location;
+		do {
+			location = locations.get(Utils.randomInt(locations.size()));
+		} while(!location.getClass().toString().equals("Planet"));
+		return (Planet)location;
+	}
+	
 	public void addLocation(Location l) {
 		locations.add(l);
 	}

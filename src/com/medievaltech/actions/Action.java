@@ -1,11 +1,13 @@
 package com.medievaltech.actions;
 
-import java.util.HashMap;
+import java.util.Hashtable;
 
 public abstract class Action extends Thread{
-	abstract public void perform(HashMap<String,Object> args);
+	protected Hashtable<String, Object> actionHelpers;
 	
-	public void run(HashMap<String,Object> args) {
-		perform(args);
+	public Action(Hashtable<String, Object> actionHelpers) {
+		this.actionHelpers = actionHelpers;
 	}
+	
+	abstract public void run();
 }
