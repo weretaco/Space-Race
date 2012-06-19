@@ -13,15 +13,20 @@ public class Map {
 	LinkedList<Location> locations = new LinkedList<Location>();
 	LinkedList<Ship> ships = new LinkedList<Ship>();
 	int dimX, dimY;
+	int speedMultiple;
 	
 	public Map(int dimX, int dimY) {
 		this.dimX = dimX;
 		this.dimY = dimY;
+		this.speedMultiple = 0;
+		setSpeedMultiple();
 	}
 	
 	public Map(int dimX, int dimY, int numPlanets) {
 		this.dimX = dimX;
 		this.dimY = dimY;
+		this.speedMultiple = 0;
+		setSpeedMultiple();
 		
 		for(int x=0; x<numPlanets; x++)
 			generateRandomPlanet();
@@ -94,11 +99,27 @@ public class Map {
 		Log.i("SpaceRace", "Inside map.update");
 		
 		for(Ship s : ships) {
-        	s.update(lastUpdatedAt);
+        	s.update(this.speedMultiple, lastUpdatedAt);
         }
 	}
 	
 	public void createPlanets(int x) {
 
+	}
+	
+	private void setSpeedMultiple() 
+	{
+		if(this.speedMultiple != 0)
+			return;
+		else if(this.dimX == 0 || this.dimY == 0)
+			return;
+		else{
+			Resolution res = new Resolution(dimX, dimY);
+			
+			if(res.getLargestMultiple() != 0)
+				this.speedMultiple = res.getLargestMultiple();
+			else
+				this.speedMultiple = 100;
+ 		}
 	}
 }

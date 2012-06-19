@@ -12,4 +12,14 @@ public class Utils {
 	public static int randomInt(int upperLimit) {
 		return (int)(r.nextDouble()*upperLimit);
 	}
+	
+	public static int reduceFraction(int numerator, int denaminator)
+	{
+		while(denaminator != 0) {
+			int t = denaminator;
+			denaminator = numerator % denaminator;
+			numerator = t;
+		}
+		return numerator;
+	}
 }

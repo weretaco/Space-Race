@@ -60,7 +60,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
         	Planet planet = new Planet(100, 100, 50, planetPaint);
         	map.addLocation(planet);
         	
-        	map.addShip(new Ship(new DoublePoint(300.0, 323.0), planet, 20, shipPaint));
+        	map.addShip(new Ship(new DoublePoint(300.0, 323.0), planet, 200, shipPaint));
         	
             while (mRun) {
                 Canvas c = null;
@@ -160,7 +160,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
      */
  
     /**
-     * Callback invoked when the surface dimensions change.Â 
+     * Callback invoked when the surface dimensions change.ï¿½ 
      */
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
  
