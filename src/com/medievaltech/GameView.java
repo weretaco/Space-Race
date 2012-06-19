@@ -47,9 +47,9 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
          */
         @Override
         public void run() {
-        	map = new Map(getWidth(), getHeight(), 9);
+        	map = new Map(getWidth(), getHeight(), 9, 5);
         	
-        	Paint planetPaint = new Paint();
+/*        	Paint planetPaint = new Paint();
             planetPaint.setAntiAlias(true);
             planetPaint.setColor(Color.rgb(20, 200, 20));
         	
@@ -61,7 +61,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
         	map.addLocation(planet);
         	
         	map.addShip(new Ship(new DoublePoint(300.0, 323.0), planet, 200, shipPaint));
-        	
+*/        	
             while (mRun) {
                 Canvas c = null;
                 try {

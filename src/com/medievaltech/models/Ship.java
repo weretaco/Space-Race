@@ -10,15 +10,16 @@ public class Ship {
 	private Paint paint;
 	private int speed; //pixels per second
 	private State currentState;
+	
 	private enum State {
 		DOCKED, FLYING
 	}
+	
 	//Create an instance of a stationary ship
 	public Ship(DoublePoint coordinates, int speed, Paint paint) {
 		this.coordinates = coordinates;
 		this.speed = speed;
 		this.paint = paint;
-		this.currentState = State.DOCKED;
 	}
 	
 	//Create an instance of a moving ship
@@ -52,7 +53,7 @@ public class Ship {
 		
 		this.coordinates.set(newX, newY);
 		
-		if(hasReachedDestination())
+		if(hasReachedDestination() && !this.isDocked())
 		{
 			dock(this.destination);
 		}
@@ -81,7 +82,7 @@ public class Ship {
 	
 	public void draw(Canvas c) {
 		if(!isDocked()) {
-			//c.drawText("X:" + coordinates.x() + " Y:" + coordinates.y(), (float)coordinates.x()-15, (float)coordinates.y()-15, paint);  
+			c.drawText("X:" + coordinates.x() + " Y:" + coordinates.y(), (float)coordinates.x()-15, (float)coordinates.y()-15, paint);  
 			c.drawRect((float)coordinates.x()-2, (float)coordinates.y()-2, (float)coordinates.x()+2, (float)coordinates.y()+2, paint);
 		}
 	}

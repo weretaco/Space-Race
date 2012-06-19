@@ -7,11 +7,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
 
+import java.util.Vector;
 import java.util.LinkedList;
+import android.util.*;
 
 public class Map {
-	LinkedList<Location> locations = new LinkedList<Location>();
-	LinkedList<Ship> ships = new LinkedList<Ship>();
+	Vector<Location> locations = new Vector<Location>();
+	Vector<Ship> ships = new Vector<Ship>();
 	int dimX, dimY;
 	int speedMultiple;
 	
@@ -22,14 +24,17 @@ public class Map {
 		setSpeedMultiple();
 	}
 	
-	public Map(int dimX, int dimY, int numPlanets) {
+	public Map(int dimX, int dimY, int numPlanets, int maxShipsPerPlanet) {
 		this.dimX = dimX;
 		this.dimY = dimY;
 		this.speedMultiple = 0;
 		setSpeedMultiple();
 		
 		for(int x=0; x<numPlanets; x++)
-			generateRandomPlanet();
+			generateRandomPlanet(maxShipsPerPlanet);
+		
+		for(int x=0; x < (numPlanets*maxShipsPerPlanet)/2; x++)
+			generateRandomFlyingShip();
 	}
 	
 	public Ship getRandomShip() {
@@ -47,8 +52,8 @@ public class Map {
 	public Planet getRandomPlanet() {
 		Location location;
 		do {
-			location = locations.get(Utils.randomInt(locations.size()));
-		} while(!location.getClass().toString().equals("Planet"));
+			location = locations.elementAt(Utils.randomInt(locations.size()));
+		} while(!(location instanceof Planet));
 		return (Planet)location;
 	}
 	
@@ -60,7 +65,7 @@ public class Map {
 		ships.add(s);
 	}
 	
-	public void generateRandomPlanet() {
+	public void generateRandomPlanet(int maxNumberOfDockedShips) {
 		Paint p = new Paint();
         p.setAntiAlias(true);
         p.setColor(Color.rgb(Utils.randomInt(256), Utils.randomInt(256), Utils.randomInt(256)));
@@ -82,7 +87,34 @@ public class Map {
             }
         } while(collision);
         
-        this.addLocation(new Planet(x, y, radius, p));
+		int numberOfShips = Utils.randomInt(maxNumberOfDockedShips + 1);
+		
+	    Planet planet = new Planet(x, y, radius, p);
+		this.addLocation(planet);
+		
+		//for(int i = 0; i < numberOfShips; i++)
+		//	this.addShip(generateRandomDockedShip(planet));
+		
+	}
+	
+	public Ship generateRandomDockedShip(Location location) {
+		Paint shipPaint = new Paint();
+		shipPaint.setAntiAlias(true);
+		shipPaint.setColor(Color.rgb(200, 20, 20));
+		
+		Ship ship = new Ship(location.getCoordinates(), 10, shipPaint);
+		location.dockShip(ship);
+		
+		return ship;
+	}
+	
+	public void generateRandomFlyingShip() {
+		Paint shipPaint = new Paint();
+		shipPaint.setAntiAlias(true);
+		shipPaint.setColor(Color.rgb(Utils.randomInt(256), Utils.randomInt(256), Utils.randomInt(256)));
+		
+		Ship ship = new Ship(new DoublePoint(Utils.randomInt(2,dimX - 1),Utils.randomInt(2,dimY - 1)),this.getRandomPlanet() ,10, shipPaint);
+		addShip(ship);
 	}
 	
 	public void draw(Canvas c) {

@@ -19,6 +19,7 @@ public class Planet extends Location {
 	
 	public void draw(Canvas c) {
 		c.drawCircle((float)x(), (float)y(), radius, p);
+		c.drawText(this.ships.size() + "" ,(float)x() - radius - 10, (float)y(), p); 
 	}
 
 	@Override

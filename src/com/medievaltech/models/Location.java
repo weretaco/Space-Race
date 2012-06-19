@@ -1,21 +1,22 @@
 package com.medievaltech.models;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 import android.graphics.Canvas;
 
 import com.medievaltech.utils.DoublePoint;
+import java.util.*;
 
 public abstract class Location {
 	private DoublePoint coordinates;
-	private ArrayList<Ship> ships;
+	protected Vector<Ship> ships;
 	
 	public Location(DoublePoint coordinates) {
 		this.coordinates = coordinates;
-		ships = new ArrayList<Ship> ();
+		ships = new Vector<Ship> ();
 	}
 	
-	public Location(DoublePoint coordinates, ArrayList<Ship> ships) {
+	public Location(DoublePoint coordinates, Vector<Ship> ships) {
 		this.coordinates = coordinates;
 		this.ships = ships;
 	}
