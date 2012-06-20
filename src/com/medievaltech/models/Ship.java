@@ -44,18 +44,21 @@ public class Ship {
 	}
 	
 	public void update(int speedMultiple, long lastUpdatedAt) {
-		int adjustedSpeed = speedMultiple * 2 + this.speed;
-		double secondSinceLastUpdate =  (System.currentTimeMillis() - lastUpdatedAt)/1000.00;
-		double movementAngle = Math.atan2(this.destination.y() - this.coordinates.y(), this.destination.x() - this.coordinates.x());
-		
-		double newX = this.coordinates.x() + ( Math.cos(movementAngle) * adjustedSpeed * secondSinceLastUpdate);
-		double newY = this.coordinates.y() + ( Math.sin(movementAngle) * adjustedSpeed * secondSinceLastUpdate);
-		
-		this.coordinates.set(newX, newY);
-		
-		if(hasReachedDestination() && !this.isDocked())
+		if(this.currentState == State.FLYING)
 		{
-			dock(this.destination);
+			int adjustedSpeed = speedMultiple * 2 + this.speed;
+			double secondSinceLastUpdate =  (System.currentTimeMillis() - lastUpdatedAt)/1000.00;
+			double movementAngle = Math.atan2(this.destination.y() - this.coordinates.y(), this.destination.x() - this.coordinates.x());
+		
+			double newX = this.coordinates.x() + ( Math.cos(movementAngle) * adjustedSpeed * secondSinceLastUpdate);
+			double newY = this.coordinates.y() + ( Math.sin(movementAngle) * adjustedSpeed * secondSinceLastUpdate);
+			
+			this.coordinates.set(newX, newY);
+		
+			if(hasReachedDestination())
+			{
+				dock(this.destination);
+			}
 		}
 	}
 	
@@ -81,7 +84,7 @@ public class Ship {
 	}
 	
 	public void draw(Canvas c) {
-		if(!isDocked()) {
+		if(this.currentState == State.FLYING) {
 			c.drawText("X:" + coordinates.x() + " Y:" + coordinates.y(), (float)coordinates.x()-15, (float)coordinates.y()-15, paint);  
 			c.drawRect((float)coordinates.x()-2, (float)coordinates.y()-2, (float)coordinates.x()+2, (float)coordinates.y()+2, paint);
 		}

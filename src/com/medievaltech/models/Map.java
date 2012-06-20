@@ -92,20 +92,18 @@ public class Map {
 	    Planet planet = new Planet(x, y, radius, p);
 		this.addLocation(planet);
 		
-		//for(int i = 0; i < numberOfShips; i++)
-		//	this.addShip(generateRandomDockedShip(planet));
-		
+		for(int i = 0; i < numberOfShips; i++)
+			generateRandomDockedShip(planet);
 	}
 	
-	public Ship generateRandomDockedShip(Location location) {
+	public void generateRandomDockedShip(Location location) {
 		Paint shipPaint = new Paint();
 		shipPaint.setAntiAlias(true);
-		shipPaint.setColor(Color.rgb(200, 20, 20));
+		shipPaint.setColor(Color.rgb(Utils.randomInt(256), Utils.randomInt(256), Utils.randomInt(256)));
 		
 		Ship ship = new Ship(location.getCoordinates(), 10, shipPaint);
 		location.dockShip(ship);
-		
-		return ship;
+		addShip(ship);
 	}
 	
 	public void generateRandomFlyingShip() {
