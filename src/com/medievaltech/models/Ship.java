@@ -92,7 +92,7 @@ public class Ship {
 	
 	public void draw(Canvas c) {
 		if(this.currentState == State.FLYING) {
-			c.drawText("X:" + coordinates.x() + " Y:" + coordinates.y(), (float)coordinates.x()-15, (float)coordinates.y()-15, paint);  
+			//c.drawText("X:" + coordinates.x() + " Y:" + coordinates.y(), (float)coordinates.x()-15, (float)coordinates.y()-15, paint);  
 			c.drawRect((float)coordinates.x()-2, (float)coordinates.y()-2, (float)coordinates.x()+2, (float)coordinates.y()+2, paint);
 		}
 	}

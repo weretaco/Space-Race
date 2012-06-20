@@ -137,24 +137,15 @@ public class Map {
 	
 	public void draw(Canvas c) {
 		int dockedShips = 0;
-		int dockedOnPlanets = 0;
-		int flyingShips = 0;
 		
-		for(Ship s: ships) {
+		for(Ship s: ships)
 			if(s.isDocked()) 
 				dockedShips++;
-			else	
-				flyingShips++;
-		}
-		
-		for(Location l: locations)
-			dockedOnPlanets += l.ships.size();
 		
 		Paint textPaint = new Paint();
 		textPaint.setARGB(255,255,255,255);
 		textPaint.setTextSize(20);
-		c.drawText("Ships on the map: "+ ships.size(),dimX/2 - 50,dimY/2 +80,textPaint);
-		c.drawText("Ships flying: "+ flyingShips + " Ships should be docked: " + dockedShips + " Ships on all planets: " + dockedOnPlanets,dimX/2 - 50,dimY/2 +110,textPaint);
+		c.drawText("Ships flying: "+ (ships.size() - dockedShips) + " Ships docked: " + dockedShips,dimX/2 - 50,dimY/2 +110,textPaint);
 		
 		
 		for(Location l : locations) {
