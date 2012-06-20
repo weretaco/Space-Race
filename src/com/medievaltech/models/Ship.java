@@ -2,6 +2,7 @@ package com.medievaltech.models;
 
 import com.medievaltech.utils.DoublePoint;
 import android.graphics.*;
+import android.util.Log;
 
 public class Ship {
 	//instance variables
@@ -16,15 +17,16 @@ public class Ship {
 	}
 	
 	//Create an instance of a stationary ship
-	public Ship(DoublePoint coordinates, int speed, Paint paint) {
-		this.coordinates = coordinates;
+	public Ship(Location location, int speed, Paint paint) {
+		this.coordinates = location.getCoordinates().clone();
+		this.destination = location;
 		this.speed = speed;
 		this.paint = paint;
 	}
 	
 	//Create an instance of a moving ship
 	public Ship(DoublePoint coordinates, Location destination, int speed, Paint paint) {
-		this.coordinates = coordinates;
+		this.coordinates = coordinates.clone();
 		this.destination = destination;
 		this.speed = speed;
 		this.paint = paint;
@@ -46,18 +48,23 @@ public class Ship {
 	public void update(int speedMultiple, long lastUpdatedAt) {
 		if(this.currentState == State.FLYING)
 		{
-			int adjustedSpeed = speedMultiple * 2 + this.speed;
-			double secondSinceLastUpdate =  (System.currentTimeMillis() - lastUpdatedAt)/1000.00;
-			double movementAngle = Math.atan2(this.destination.y() - this.coordinates.y(), this.destination.x() - this.coordinates.x());
-		
-			double newX = this.coordinates.x() + ( Math.cos(movementAngle) * adjustedSpeed * secondSinceLastUpdate);
-			double newY = this.coordinates.y() + ( Math.sin(movementAngle) * adjustedSpeed * secondSinceLastUpdate);
-			
-			this.coordinates.set(newX, newY);
-		
-			if(hasReachedDestination())
+			try
 			{
-				dock(this.destination);
+				int adjustedSpeed = speedMultiple * 2 + this.speed;
+				double secondSinceLastUpdate =  (System.currentTimeMillis() - lastUpdatedAt)/1000.00;
+				double movementAngle = Math.atan2(this.destination.y() - this.coordinates.y(), this.destination.x() - this.coordinates.x());
+		
+				double newX = this.coordinates.x() + ( Math.cos(movementAngle) * adjustedSpeed * secondSinceLastUpdate);
+				double newY = this.coordinates.y() + ( Math.sin(movementAngle) * adjustedSpeed * secondSinceLastUpdate);
+			
+				this.coordinates.set(newX, newY);
+		
+				if(hasReachedDestination())
+				{
+					dock(this.destination);
+				}
+			} catch(Exception e) {
+				Log.e("SpaceRaceError", this.toString());
 			}
 		}
 	}
@@ -88,5 +95,9 @@ public class Ship {
 			c.drawText("X:" + coordinates.x() + " Y:" + coordinates.y(), (float)coordinates.x()-15, (float)coordinates.y()-15, paint);  
 			c.drawRect((float)coordinates.x()-2, (float)coordinates.y()-2, (float)coordinates.x()+2, (float)coordinates.y()+2, paint);
 		}
+	}
+	
+	public String toString() {
+		return " Coordinates: " + this.coordinates + " Current State: " + this.currentState.toString() + " Destination: " + ((this.destination != null) ? this.destination.toString() : "null") + " Speed: " + this.speed + " Paint: " +this.paint.toString();
 	}
 }

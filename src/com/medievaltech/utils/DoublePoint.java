@@ -8,6 +8,10 @@ public class DoublePoint {
 		this.y = y;
 	}
 	
+	public DoublePoint clone() {
+		return new DoublePoint(x,y);
+	}
+	
 	public double x() {
 		return x;
 	}
@@ -23,5 +27,9 @@ public class DoublePoint {
 	
 	public double distanceTo(DoublePoint point) {
 		return Math.sqrt(Math.pow((point.x() - x), 2.0) + Math.pow((point.y() - y), 2.0));
+	}
+	
+	public String toString() {
+		return "X: " + x + " Y: " + y;
 	}
 }

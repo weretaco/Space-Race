@@ -20,8 +20,9 @@ abstract public class Trigger {
 	}
 	
 	protected void activate() {
-		for(Action action: this.actions)
-			action.start();
+		for(Action action: this.actions) {
+			action.run();
+		}
 	}
 	
 	abstract protected boolean shouldActivate();

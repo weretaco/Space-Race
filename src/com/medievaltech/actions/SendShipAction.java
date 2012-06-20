@@ -16,7 +16,7 @@ public class SendShipAction extends Action {
 		Map map = ((Map)this.actionHelpers.get("map"));
 		Ship ship = map.getRandomDockedShip();
 		Planet destination = null;
-		while(destination != null && !destination.hasShip(ship))
+		while(destination == null || destination.hasShip(ship))
 			destination = map.getRandomPlanet();
 		ship.flyTo(destination);
 	}	

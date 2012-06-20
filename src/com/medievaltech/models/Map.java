@@ -10,10 +10,14 @@ import android.util.Log;
 import java.util.Vector;
 import java.util.LinkedList;
 import android.util.*;
+import java.util.*;
+import com.medievaltech.triggers.*;
 
 public class Map {
 	Vector<Location> locations = new Vector<Location>();
 	Vector<Ship> ships = new Vector<Ship>();
+	Hashtable<String, Object> gameConfig = new Hashtable<String, Object>();
+	LinkedList<Trigger> triggers = new LinkedList<Trigger>();
 	int dimX, dimY;
 	int speedMultiple;
 	
@@ -21,14 +25,20 @@ public class Map {
 		this.dimX = dimX;
 		this.dimY = dimY;
 		this.speedMultiple = 0;
+		
 		setSpeedMultiple();
+		seedGameConfig();
+		populateTriggers();
 	}
 	
 	public Map(int dimX, int dimY, int numPlanets, int maxShipsPerPlanet) {
 		this.dimX = dimX;
 		this.dimY = dimY;
 		this.speedMultiple = 0;
+		
 		setSpeedMultiple();
+		seedGameConfig();
+		populateTriggers();
 		
 		for(int x=0; x<numPlanets; x++)
 			generateRandomPlanet(maxShipsPerPlanet);
@@ -42,11 +52,12 @@ public class Map {
 	}
 	
 	public Ship getRandomDockedShip() {
-		LinkedList<Ship> dockedShips = new LinkedList<Ship> ();
-		for(Ship s: this.ships)
-			if(s.isDocked())
-				dockedShips.add(s);
-		return dockedShips.get(Utils.randomInt(dockedShips.size()));
+		Planet p;
+		do {
+			p = getRandomPlanet();
+		}while(p.ships.size() == 0);
+		
+		return  p.ships.elementAt(Utils.randomInt(p.ships.size()));
 	}
 	
 	public Planet getRandomPlanet() {
@@ -101,7 +112,7 @@ public class Map {
 		shipPaint.setAntiAlias(true);
 		shipPaint.setColor(Color.rgb(Utils.randomInt(256), Utils.randomInt(256), Utils.randomInt(256)));
 		
-		Ship ship = new Ship(location.getCoordinates(), 10, shipPaint);
+		Ship ship = new Ship(location, 10, shipPaint);
 		location.dockShip(ship);
 		addShip(ship);
 	}
@@ -113,6 +124,15 @@ public class Map {
 		
 		Ship ship = new Ship(new DoublePoint(Utils.randomInt(2,dimX - 1),Utils.randomInt(2,dimY - 1)),this.getRandomPlanet() ,10, shipPaint);
 		addShip(ship);
+	}
+	
+	public void seedGameConfig() {
+		this.gameConfig.put("randomShipChance",0.03);
+		this.gameConfig.put("map",this);
+	}
+	
+	public void populateTriggers() {
+		this.triggers.add(new ShipTrigger(this.gameConfig));
 	}
 	
 	public void draw(Canvas c) {
@@ -131,6 +151,9 @@ public class Map {
 		for(Ship s : ships) {
         	s.update(this.speedMultiple, lastUpdatedAt);
         }
+		
+		for(Trigger t: this.triggers)
+			t.trigger();
 	}
 	
 	public void createPlanets(int x) {

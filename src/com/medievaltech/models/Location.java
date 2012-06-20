@@ -56,6 +56,9 @@ public abstract class Location {
 		ships.remove(ship);
 	}
 	
+	public String toString() {
+		return "Coordinates: " + this.coordinates.toString() + " Number of Docked Ships: " +this.ships.size();
+	}
 	abstract public void destroy();
 	abstract public boolean canDock(Ship ship);	
 }
