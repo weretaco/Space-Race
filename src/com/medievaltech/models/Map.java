@@ -113,7 +113,7 @@ public class Map {
 		shipPaint.setColor(Color.rgb(Utils.randomInt(256), Utils.randomInt(256), Utils.randomInt(256)));
 		
 		Ship ship = new Ship(location, 10, shipPaint);
-		location.dockShip(ship);
+		ship.dock(location);
 		addShip(ship);
 	}
 	
@@ -127,7 +127,7 @@ public class Map {
 	}
 	
 	public void seedGameConfig() {
-		this.gameConfig.put("randomShipChance",0.03);
+		this.gameConfig.put("randomShipChance",0.01);
 		this.gameConfig.put("map",this);
 	}
 	
@@ -136,6 +136,27 @@ public class Map {
 	}
 	
 	public void draw(Canvas c) {
+		int dockedShips = 0;
+		int dockedOnPlanets = 0;
+		int flyingShips = 0;
+		
+		for(Ship s: ships) {
+			if(s.isDocked()) 
+				dockedShips++;
+			else	
+				flyingShips++;
+		}
+		
+		for(Location l: locations)
+			dockedOnPlanets += l.ships.size();
+		
+		Paint textPaint = new Paint();
+		textPaint.setARGB(255,255,255,255);
+		textPaint.setTextSize(20);
+		c.drawText("Ships on the map: "+ ships.size(),dimX/2 - 50,dimY/2 +80,textPaint);
+		c.drawText("Ships flying: "+ flyingShips + " Ships should be docked: " + dockedShips + " Ships on all planets: " + dockedOnPlanets,dimX/2 - 50,dimY/2 +110,textPaint);
+		
+		
 		for(Location l : locations) {
 			l.draw(c);
 		}
