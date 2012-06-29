@@ -1,9 +1,6 @@
 package com.medievaltech;
 
 import com.medievaltech.models.Map;
-import com.medievaltech.models.Planet;
-import com.medievaltech.models.Ship;
-import com.medievaltech.utils.DoublePoint;
 
 import android.content.Context;
 import android.graphics.*;
@@ -12,63 +9,47 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 class GameView extends SurfaceView implements SurfaceHolder.Callback {
-    class GameThread extends Thread {
-    	
-        /** Are we running ? */
-        private boolean mRun;
-        
-        /** Used to figure out elapsed time between frames */
-        private long mLastTime;
-        
-        /** Variables for the counter */
-        private int frameSamplesCollected = 0;
-        private int frameSampleTime = 0;
-        private int fps = 0;
-        
-        private Map map;
-        
-        /** Handle to the surface manager object we interact with */
-        private SurfaceHolder mSurfaceHolder;
- 
-        /** How to display the text */
-        private Paint textPaint;
- 
-        public GameThread(SurfaceHolder surfaceHolder) {
-            mSurfaceHolder = surfaceHolder;
- 
-            /** Initiate the text painter */
-            textPaint = new Paint();
-            textPaint.setARGB(255,255,255,255);
-            textPaint.setTextSize(32);
+
+	/** Are we running ? */
+    private boolean mRun;
+    
+    /** Used to figure out elapsed time between frames */
+    private long mLastTime;
+    
+    /** Variables for the counter */
+    private int frameSamplesCollected = 0;
+    private int frameSampleTime = 0;
+    private int fps = 0;
+    
+    private Map map;
+    
+    /** Handle to the surface manager object we interact with */
+    private SurfaceHolder mSurfaceHolder;
+
+    /** How to display the text */
+    private Paint textPaint;
+    
+    /** The thread that actually draws the animation */
+    private GameThread thread;
+	
+	class GameThread extends Thread {
+        public GameThread() {
         }
  
         /**
          * The actual game loop!
          */
         @Override
-        public void run() {
-        	map = new Map(getWidth(), getHeight(), 9, 5);
-        	
-/*        	Paint planetPaint = new Paint();
-            planetPaint.setAntiAlias(true);
-            planetPaint.setColor(Color.rgb(20, 200, 20));
-        	
-            Paint shipPaint = new Paint();
-        	shipPaint.setAntiAlias(true);
-            shipPaint.setColor(Color.rgb(200, 20, 20));
-        	
-        	Planet planet = new Planet(100, 100, 50, planetPaint);
-        	map.addLocation(planet);
-        	
-        	map.addShip(new Ship(new DoublePoint(300.0, 323.0), planet, 200, shipPaint));
-*/        	
+        public void run() {      	
             while (mRun) {
                 Canvas c = null;
                 try {
                     c = mSurfaceHolder.lockCanvas(null);
-                    synchronized (mSurfaceHolder) {
-                        updatePhysics();
-                        doDraw(c);
+                    if(c != null) {
+	                    synchronized (mSurfaceHolder) {
+	                        updatePhysics();
+	                        doDraw(c);
+	                    }
                     }
                 }finally {
                     if (c != null) {
@@ -140,19 +121,21 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
  
     }
  
-    /** The thread that actually draws the animation */
-    private GameThread thread;
- 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
  
         // register our interest in hearing about changes to our surface
-        SurfaceHolder holder = getHolder();
-        holder.addCallback(this);
- 
-        // create thread only; it's started in surfaceCreated()
-        thread = new GameThread(holder);
- 
+        mSurfaceHolder = getHolder();
+        mSurfaceHolder.addCallback(this);
+        
+        /** Initiate the text painter */
+        textPaint = new Paint();
+        textPaint.setARGB(255,255,255,255);
+        textPaint.setTextSize(32);
+        
+        map = null;
+        
+        thread = null;
     }
  
     /**
@@ -171,6 +154,11 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
      * used.
      */
     public void surfaceCreated(SurfaceHolder holder) {
+    	if(map == null)
+    		map = new Map(getWidth(), getHeight(), 9, 5);
+    	if(thread != null)
+    		thread.interrupt();
+    	thread = new GameThread();
         thread.setRunning(true);
         thread.start();
     }

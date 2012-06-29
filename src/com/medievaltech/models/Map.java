@@ -9,7 +9,6 @@ import android.util.Log;
 
 import java.util.Vector;
 import java.util.LinkedList;
-import android.util.*;
 import java.util.*;
 import com.medievaltech.triggers.*;
 
@@ -20,8 +19,13 @@ public class Map {
 	LinkedList<Trigger> triggers = new LinkedList<Trigger>();
 	int dimX, dimY;
 	int speedMultiple;
+	Paint textPaint;
 	
 	public Map(int dimX, int dimY) {
+		textPaint = new Paint();
+		textPaint.setARGB(255, 255, 255, 255);
+		textPaint.setTextSize(20);
+		
 		this.dimX = dimX;
 		this.dimY = dimY;
 		this.speedMultiple = 0;
@@ -32,19 +36,15 @@ public class Map {
 	}
 	
 	public Map(int dimX, int dimY, int numPlanets, int maxShipsPerPlanet) {
-		this.dimX = dimX;
-		this.dimY = dimY;
-		this.speedMultiple = 0;
+		this(dimX, dimY);
 		
-		setSpeedMultiple();
-		seedGameConfig();
-		populateTriggers();
-		
-		for(int x=0; x<numPlanets; x++)
+		for(int x=0; x<numPlanets; x++) {
 			generateRandomPlanet(maxShipsPerPlanet);
+		}
 		
-		for(int x=0; x < (numPlanets*maxShipsPerPlanet)/2; x++)
+		for(int x=0; x < (numPlanets*maxShipsPerPlanet)/2; x++) {
 			generateRandomFlyingShip();
+		}
 	}
 	
 	public Ship getRandomShip() {
@@ -61,9 +61,10 @@ public class Map {
 	}
 	
 	public Planet getRandomPlanet() {
+		// we should check that the list of planets isn't empty
 		Location location;
 		do {
-			location = locations.elementAt(Utils.randomInt(locations.size()));
+			location = locations.get(Utils.randomInt(locations.size()));
 		} while(!(location instanceof Planet));
 		return (Planet)location;
 	}
@@ -91,6 +92,7 @@ public class Map {
             collision = false;
             
             for(Location l : locations) {
+            	// technically we should use the collision radius of both planets
             	if(l.getCoordinates().distanceTo(new DoublePoint(x, y))-l.getCollisionRadius()-radius <= 0) {
             		collision = true;
             		break;
@@ -101,10 +103,11 @@ public class Map {
 		int numberOfShips = Utils.randomInt(maxNumberOfDockedShips + 1);
 		
 	    Planet planet = new Planet(x, y, radius, p);
-		this.addLocation(planet);
+	    this.addLocation(planet);
 		
-		for(int i = 0; i < numberOfShips; i++)
+		for(int i = 0; i < numberOfShips; i++) {
 			generateRandomDockedShip(planet);
+		}
 	}
 	
 	public void generateRandomDockedShip(Location location) {
@@ -142,11 +145,8 @@ public class Map {
 			if(s.isDocked()) 
 				dockedShips++;
 		
-		Paint textPaint = new Paint();
-		textPaint.setARGB(255,255,255,255);
-		textPaint.setTextSize(20);
-		c.drawText("Ships flying: "+ (ships.size() - dockedShips) + " Ships docked: " + dockedShips,dimX/2 - 50,dimY/2 +110,textPaint);
-		
+		c.drawText("Ships flying: "+ (ships.size() - dockedShips) + " Ships docked: " + dockedShips, dimX/2 - 50, dimY/2 +110, textPaint);
+		c.drawText("Ships flying: ", dimX/2 - 50, dimY/2 +110, textPaint);
 		
 		for(Location l : locations) {
 			l.draw(c);
@@ -164,8 +164,9 @@ public class Map {
         	s.update(this.speedMultiple, lastUpdatedAt);
         }
 		
-		for(Trigger t: this.triggers)
+		for(Trigger t: this.triggers) {
 			t.trigger();
+		}
 	}
 	
 	public void createPlanets(int x) {

@@ -5,7 +5,6 @@ import java.util.Vector;
 import android.graphics.Canvas;
 
 import com.medievaltech.utils.DoublePoint;
-import java.util.*;
 
 public abstract class Location {
 	private DoublePoint coordinates;
