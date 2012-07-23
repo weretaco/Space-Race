@@ -45,18 +45,26 @@ public class Ship {
 		return this.coordinates;
 	}
 	
-	public void update(int speedMultiple, long lastUpdatedAt) {
+	public void update(int speedMultiple, long timeElapsed) {
 		if(this.currentState == State.FLYING)
 		{
+			Log.d("SpaceRace", "ship is moving at speed "+speed);
+			Log.d("SpaceRace", "speed multiple: "+speedMultiple);
 			try
 			{
-				int adjustedSpeed = speedMultiple * 2 + this.speed;
-				double secondSinceLastUpdate =  (System.currentTimeMillis() - lastUpdatedAt)/1000.00;
+				int adjustedSpeed = speedMultiple * 2 + speed;
+				double secondsSinceLastUpdate =  timeElapsed/1000.0;
+				
 				double movementAngle = Math.atan2(this.destination.y() - this.coordinates.y(), this.destination.x() - this.coordinates.x());
 		
-				double newX = this.coordinates.x() + ( Math.cos(movementAngle) * adjustedSpeed * secondSinceLastUpdate);
-				double newY = this.coordinates.y() + ( Math.sin(movementAngle) * adjustedSpeed * secondSinceLastUpdate);
+				Log.d("SpaceRace", "speed: "+speed);
+				Log.d("SpaceRace", "seconds since last update: "+secondsSinceLastUpdate);
+				
+				double newX = this.coordinates.x() + ( Math.cos(movementAngle) * speed * secondsSinceLastUpdate);
+				double newY = this.coordinates.y() + ( Math.sin(movementAngle) * speed * secondsSinceLastUpdate);
 			
+				Log.d("SpaceRace", "new coordinates: ("+newX+", "+newY+")");
+				
 				this.coordinates.set(newX, newY);
 		
 				if(hasReachedDestination())

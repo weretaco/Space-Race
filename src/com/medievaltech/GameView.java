@@ -14,7 +14,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private boolean mRun;
     
     /** Used to figure out elapsed time between frames */
-    private long mLastTime;
+    private long mLastUpdated;
     
     /** Variables for the counter */
     private int frameSamplesCollected = 0;
@@ -40,7 +40,9 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
          * The actual game loop!
          */
         @Override
-        public void run() {      	
+        public void run() {
+        	mLastUpdated = System.currentTimeMillis();
+        	
             while (mRun) {
                 Canvas c = null;
                 try {
@@ -66,29 +68,25 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
          */
         private void updatePhysics() {
             long now = System.currentTimeMillis();
+            long timeElapsed = now - mLastUpdated;
+            mLastUpdated = now;
             
-            if (mLastTime != 0) {
-            	
-            	map.update(now);
- 
-                //Time difference between now and last time we were here
-                int time = (int) (now - mLastTime);
-                frameSampleTime += time;
-                frameSamplesCollected++;
- 
-                //After 10 frames
-                if (frameSamplesCollected == 10) {
- 
-                    //Update the fps variable
-                    fps = (int) (10000 / frameSampleTime);
- 
-                    //Reset the sampletime + frames collected
-                    frameSampleTime = 0;
-                    frameSamplesCollected = 0;
-                }
+            map.update(timeElapsed);
+            
+            //Time difference between now and last time we were here
+            frameSampleTime += timeElapsed;
+            frameSamplesCollected++;
+
+            //After 10 frames
+            if (frameSamplesCollected == 10) {
+
+                //Update the fps variable
+                fps = (int) (10000 / frameSampleTime);
+
+                //Reset the sampletime + frames collected
+                frameSampleTime = 0;
+                frameSamplesCollected = 0;
             }
- 
-            mLastTime = now;
         }
  
         /**

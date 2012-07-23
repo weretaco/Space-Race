@@ -38,6 +38,16 @@ public class Map {
 	public Map(int dimX, int dimY, int numPlanets, int maxShipsPerPlanet) {
 		this(dimX, dimY);
 		
+		Paint shipPaint = new Paint();
+		shipPaint.setAntiAlias(true);
+		shipPaint.setColor(Color.rgb(Utils.randomInt(256), Utils.randomInt(256), Utils.randomInt(256)));
+		
+		generateRandomPlanet(0);
+		
+		Ship ship = new Ship(new DoublePoint(Utils.randomInt(2, dimX - 1), Utils.randomInt(2,dimY - 1)), getRandomPlanet(), 10, shipPaint);
+		addShip(ship);
+		
+		/*
 		for(int x=0; x<numPlanets; x++) {
 			generateRandomPlanet(maxShipsPerPlanet);
 		}
@@ -45,6 +55,7 @@ public class Map {
 		for(int x=0; x < (numPlanets*maxShipsPerPlanet)/2; x++) {
 			generateRandomFlyingShip();
 		}
+		*/
 	}
 	
 	public Ship getRandomShip() {
@@ -125,7 +136,7 @@ public class Map {
 		shipPaint.setAntiAlias(true);
 		shipPaint.setColor(Color.rgb(Utils.randomInt(256), Utils.randomInt(256), Utils.randomInt(256)));
 		
-		Ship ship = new Ship(new DoublePoint(Utils.randomInt(2,dimX - 1),Utils.randomInt(2,dimY - 1)),this.getRandomPlanet() ,10, shipPaint);
+		Ship ship = new Ship(new DoublePoint(Utils.randomInt(2,dimX - 1), Utils.randomInt(2,dimY - 1)), getRandomPlanet(), 10, shipPaint);
 		addShip(ship);
 	}
 	
@@ -157,11 +168,12 @@ public class Map {
 		}
 	}
 	
-	public void update(long lastUpdatedAt) {
-		Log.i("SpaceRace", "Inside map.update");
+	public void update(long timeElapsed) {
+		Log.v("SpaceRace", "Inside map.update");
+		Log.d("SpaceRace", "timeElapsed: "+timeElapsed);
 		
 		for(Ship s : ships) {
-        	s.update(this.speedMultiple, lastUpdatedAt);
+        	s.update(this.speedMultiple, timeElapsed);
         }
 		
 		for(Trigger t: this.triggers) {
