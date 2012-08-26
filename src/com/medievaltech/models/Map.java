@@ -1,16 +1,14 @@
 package com.medievaltech.models;
 
-import com.medievaltech.utils.*;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
-
 import java.util.Vector;
 import java.util.LinkedList;
 import java.util.*;
+
 import com.medievaltech.triggers.*;
+import com.medievaltech.utils.*;
 
 public class Map {
 	Vector<Location> locations = new Vector<Location>();
@@ -47,7 +45,6 @@ public class Map {
 		Ship ship = new Ship(new DoublePoint(Utils.randomInt(2, dimX - 1), Utils.randomInt(2,dimY - 1)), getRandomPlanet(), 10, shipPaint);
 		addShip(ship);
 		
-		/*
 		for(int x=0; x<numPlanets; x++) {
 			generateRandomPlanet(maxShipsPerPlanet);
 		}
@@ -55,10 +52,12 @@ public class Map {
 		for(int x=0; x < (numPlanets*maxShipsPerPlanet)/2; x++) {
 			generateRandomFlyingShip();
 		}
-		*/
 	}
 	
 	public Ship getRandomShip() {
+		if(ships.size() == 0)
+			return null;
+		
 		return ships.get(Utils.randomInt(ships.size()));
 	}
 	
@@ -66,16 +65,46 @@ public class Map {
 		Planet p;
 		do {
 			p = getRandomPlanet();
+			if(p == null)	// means there are no planets on this map
+				return null;
 		}while(p.ships.size() == 0);
 		
 		return  p.ships.elementAt(Utils.randomInt(p.ships.size()));
 	}
 	
 	public Planet getRandomPlanet() {
-		// we should check that the list of planets isn't empty
+		if(locations.size() == 0)
+			return null;
+		
 		Location location;
+		// once we have Locations that aren't planets, this might loop forever if
+		// the list is nonempty, but there are no planets in it
+		// we also need to check the type of location before casting
 		do {
 			location = locations.get(Utils.randomInt(locations.size()));
+		} while(!(location instanceof Planet));
+		return (Planet)location;
+	}
+	
+	// we may want to create a function that takes a filter and returns everything matching that filter
+	// we can also function a function that takes a filter and returns a random item that matches that filter
+	public Planet getRandomPlanetWithoutShip(Ship s) {
+		Vector<Location> matchingLocations = new Vector<Location>();
+		
+		for(Location l : locations) {
+			if(!l.hasShip(s))
+				matchingLocations.add(l);
+		}
+		
+		if(matchingLocations.size() == 0)
+			return null;
+		
+		Location location;
+		// once we have Locations that aren't planets, this might loop forever if
+		// the list is nonempty, but there are no planets in it
+		// we also need to check the type of location before casting
+		do {
+			location = matchingLocations.get(Utils.randomInt(matchingLocations.size()));
 		} while(!(location instanceof Planet));
 		return (Planet)location;
 	}
@@ -141,8 +170,8 @@ public class Map {
 	}
 	
 	public void seedGameConfig() {
-		this.gameConfig.put("randomShipChance",0.01);
-		this.gameConfig.put("map",this);
+		this.gameConfig.put("randomShipChance", 0.01);
+		this.gameConfig.put("map", this);
 	}
 	
 	public void populateTriggers() {
@@ -156,8 +185,7 @@ public class Map {
 			if(s.isDocked()) 
 				dockedShips++;
 		
-		c.drawText("Ships flying: "+ (ships.size() - dockedShips) + " Ships docked: " + dockedShips, dimX/2 - 50, dimY/2 +110, textPaint);
-		c.drawText("Ships flying: ", dimX/2 - 50, dimY/2 +110, textPaint);
+		c.drawText("Ships flying: "+ (ships.size() - dockedShips) + " Ships docked: " + dockedShips, dimX/2 - 50, dimY/2 + 110, textPaint);
 		
 		for(Location l : locations) {
 			l.draw(c);
@@ -169,14 +197,11 @@ public class Map {
 	}
 	
 	public void update(long timeElapsed) {
-		Log.v("SpaceRace", "Inside map.update");
-		Log.d("SpaceRace", "timeElapsed: "+timeElapsed);
-		
 		for(Ship s : ships) {
         	s.update(this.speedMultiple, timeElapsed);
         }
 		
-		for(Trigger t: this.triggers) {
+		for(Trigger t : this.triggers) {
 			t.trigger();
 		}
 	}

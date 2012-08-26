@@ -26,7 +26,6 @@ public class Planet extends Location {
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
 		
 	}
 

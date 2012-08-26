@@ -15,12 +15,12 @@ abstract public class Trigger {
 	
 	public void trigger()
 	{
-		if (shouldActivate())
+		if(shouldActivate())
 			activate();
 	}
 	
 	protected void activate() {
-		for(Action action: this.actions) {
+		for(Action action : this.actions) {
 			action.run();
 		}
 	}

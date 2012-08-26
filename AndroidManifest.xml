@@ -10,13 +10,16 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity
-            android:name=".SpaceRace"
-            android:label="@string/app_name" >
+            android:name=".SpaceActivity"
+            android:label="SpaceActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+        	android:name=".ShipDesignerActivity"
+        	android:label="ShipDesignerActivity" >
         </activity>
     </application>
 

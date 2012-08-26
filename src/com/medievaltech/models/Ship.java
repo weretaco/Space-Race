@@ -52,7 +52,6 @@ public class Ship {
 			Log.d("SpaceRace", "speed multiple: "+speedMultiple);
 			try
 			{
-				int adjustedSpeed = speedMultiple * 2 + speed;
 				double secondsSinceLastUpdate =  timeElapsed/1000.0;
 				
 				double movementAngle = Math.atan2(this.destination.y() - this.coordinates.y(), this.destination.x() - this.coordinates.x());
