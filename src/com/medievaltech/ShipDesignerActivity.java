@@ -1,13 +1,12 @@
 package com.medievaltech;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 
 import com.medievaltech.utils.*;
 
-public class ShipDesignerActivity extends Activity {
+public class ShipDesignerActivity extends GameActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

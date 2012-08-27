@@ -27,7 +27,7 @@ class ShipDesignerView extends GameView {
     }
     
     public void runFrame(Canvas c) {
-		updatePhysics();
+    	updatePhysics();
 		doDraw(c);
 	}
     
@@ -53,11 +53,10 @@ class ShipDesignerView extends GameView {
 	}
 	
 	protected void doDraw(Canvas canvas) {
-	    canvas.drawColor(Color.BLACK);
+		canvas.drawColor(Color.BLACK);
 	    
-	    // Draw fps
-	    canvas.drawText(fps + " fps", getWidth() / 2, getHeight() / 2, textPaint);
-	    canvas.drawText("You can't escape. Hahaha!", getWidth() / 2, getHeight() / 2 - 15, textPaint);
+		// Draw fps
+		canvas.drawText(fps + " fps", getWidth() / 2, getHeight() / 2, textPaint);
 	    
 	    //Draw screen dimensions
 	    canvas.drawText(getWidth()+"x"+getHeight(), getWidth() / 2, getHeight() / 2 + 50, textPaint);
