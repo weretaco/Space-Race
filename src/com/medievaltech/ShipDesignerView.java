@@ -56,9 +56,9 @@ class ShipDesignerView extends GameView {
 		canvas.drawColor(Color.BLACK);
 	    
 		// Draw fps
-		canvas.drawText(fps + " fps", getWidth() / 2, getHeight() / 2, textPaint);
-	    
-	    //Draw screen dimensions
-	    canvas.drawText(getWidth()+"x"+getHeight(), getWidth() / 2, getHeight() / 2 + 50, textPaint);
+		canvas.drawText(fps + " fps", getWidth()-120, getHeight() - 32, textPaint);
+		
+		//Draw screen dimensions
+		canvas.drawText(getWidth()+"x"+getHeight(), getWidth()-120, getHeight(), textPaint);
 	}
 }

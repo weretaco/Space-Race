@@ -30,7 +30,8 @@ class SpaceView extends GameView {
 		textPaint.setARGB(255,255,255,255);
 		textPaint.setTextSize(32);
 		
-		map = new Map(400, 400);
+		// getWidth and getHeight both return 0 now, so we can't use them to initialize the map
+		map = new Map(400, 600, 9, 5);
 	}
 	
 	public void runFrame(Canvas c) {
@@ -66,12 +67,12 @@ class SpaceView extends GameView {
 	private void doDraw(Canvas canvas) {
 		canvas.drawColor(Color.BLACK);
 		
-		map.draw(canvas);
-		
 		// Draw fps
-		canvas.drawText(fps + " fps", getWidth() / 2, getHeight() / 2, textPaint);
+		canvas.drawText(fps + " fps", getWidth()-120, getHeight() - 32, textPaint);
 		
 		//Draw screen dimensions
-		canvas.drawText(getWidth()+"x"+getHeight(), getWidth() / 2, getHeight() / 2 + 50, textPaint);
+		canvas.drawText(getWidth()+"x"+getHeight(), getWidth()-120, getHeight(), textPaint);
+	
+		map.draw(canvas);
 	}
 }
