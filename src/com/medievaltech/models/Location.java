@@ -43,6 +43,10 @@ public abstract class Location {
 		return ships.contains(ship);
 	}
 	
+	public int getNumShips() {
+		return ships.size();
+	}
+	
 	public void setCoordinates(DoublePoint coordinates) {
 		this.coordinates = coordinates;
 	}
